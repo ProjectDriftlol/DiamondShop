@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account Avenue</title>
+  <link rel="icon" href="https://th.bing.com/th/id/R.d7d9f31c03017c75e5bd0e20a07489d?rik=Pflw6RzAtjzR4Q&riu=http%3a%2f%2fclipart-library.com%2fimages%2friLonG4oT.png&ehk=qU5C1lMBxA6eZrDNbr3AsPj%2bW6SKseYygkUAleoZOH4%3d&risl=&pid=ImgRaw&r=0" type="image/x-icon" />
+  <meta name="description" content="#1 Account & Subscription service.">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-color: #1d1d4d;
+      --font-color: #f2f2f2;
+      --main-color: #7582d6;
+      --highlight-color: #e1a0ff;
+      --navbar-bg: rgba(255, 255, 255, 0.1);
+      --card-color: rgba(255, 255, 255, 0.1);
+      --btn-bg: linear-gradient(135deg, #7582d6, #e1a0ff);
+      --btn-hover-bg: linear-gradient(135deg, #5261b4, #b06dca);
+      --footer-color: rgba(255, 255, 255, 0.1);
+      --animation-duration: 0.3s;
+      --radius: 10px;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Unbounded', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--font-color);
+      overflow-x: hidden;
+      transition: background-color var(--animation-duration) ease, color var(--animation-duration) ease;
+    }
+
+    .main-container {
+      transform: scale(0.75);
+      transform-origin: top left;
+      width: 133.33%;
+    }
+
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.625rem 2rem;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 1.5rem;
+      width: 85%;
+      max-width: 1300px;
+      position: fixed;
+      top: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      transition: box-shadow var(--animation-duration) ease, background var(--animation-duration) ease;
+    }
+
+    .nav-bar:hover {
+      box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-bar .logo img {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 50%;
+      border: 1px solid var(--font-color);
+      transition: border-color var(--animation-duration) ease;
+    }
+
+    .nav-bar .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-bar .nav-links a {
+      color: var(--font-color);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      transition: color var(--animation-duration) ease, background-color var(--animation-duration) ease;
+    }
+
+    .nav-bar .nav-links a:hover {
+      color: #92e0ff;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--navbar-bg);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      color: var(--font-color);
+      transition: background-color var(--animation-duration) ease;
+    }
+
+    .theme-toggle .selected-theme {
+      user-select: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-toggle .options {
+      position: absolute;
+      top: 110%;
+      left: 0;
+      width: 100%;
+      background-color: var(--navbar-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.5rem;
+      display: none;
+      z-index: 100;
+      overflow: hidden;
+      animation: fadeInDropdown var(--animation-duration) ease;
+    }
+
+    .theme-toggle .options div {
+      padding: 0.5rem;
+      cursor: pointer;
+      transition: background-color var(--animation-duration) ease;
+      color: var(--font-color);
+    }
+
+    .theme-toggle .options div:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .theme-toggle:hover .options {
+      display: block;
+    }
+
+    .theme-toggle .arrow {
+      width: 0.5rem;
+      height: 0.5rem;
+      border: solid var(--font-color);
+      border-width: 0 0.125rem 0.125rem 0;
+      transform: rotate(45deg);
+      transition: transform var(--animation-duration) ease;
+    }
+
+    .theme-toggle:hover .arrow {
+      transform: rotate(225deg);
+    }
+
+    .menu {
+      display: none;
+    }
+
+    .menu-container {
+      flex-direction: column;
+      cursor: pointer;
+      gap: 0.375rem;
+    }
+
+    .menu div {
+      width: 1.5rem;
+      height: 0.15rem;
+      background-color: var(--font-color);
+      transition: all var(--animation-duration) ease;
+    }
+
+    .page-header {
+      text-align: center;
+      padding: 10rem 1.5rem 3rem;
+      max-width: 70rem;
+      margin: auto;
+      animation: fadeIn 1s ease-out forwards;
+    }
+
+    .page-header h1 {
+      font-size: 4rem;
+      color: var(--main-color);
+      background: linear-gradient(90deg, var(--main-color), var(--highlight-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      margin-bottom: 1.5rem;
+      animation: fadeInText 2s ease-out;
+    }
+
+    .page-header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4rem;
+      height: 0.2rem;
+      background-color: var(--main-color);
+      border-radius: 0.3rem;
+    }
+
+    .content-container {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 4rem 1.5rem;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .product-section {
+      font-size: 1.8rem;
+      text-align: left;
+      color: var(--font-color);
+      margin-bottom: 2.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+      gap: 2rem;
+      animation: fadeInUp 1.5s ease-in-out;
+    }
+
+    .product-card {
+      background: var(--card-color);
+      backdrop-filter: blur(15px);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.2);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-card:hover {
+      transform: translateY(-0.8rem);
+      box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.4);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 10rem;
+      object-fit: cover;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .product-name {
+      font-size: 1.5rem;
+      color: var(--main-color);
+      margin-bottom: 0.5rem;
+      flex-grow: 1;
+    }
+
+    .product-cost {
+      font-size: 1.6rem;
+      color: var(--main-color);
+      margin-bottom: 0.8rem;
+    }
+
+    .purchase-btn {
+      padding: 0.8rem 2.2rem;
+      background: var(--btn-bg);
+      border-radius: 2rem;
+      text-decoration: none;
+      font-weight: bold;
+      color: #ffffff;
+      transition: background var(--animation-duration) ease, transform var(--animation-duration) ease, box-shadow var(--animation-duration) ease;
+      box-shadow: 0 0.3rem 1.25rem rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .purchase-btn:hover {
+      background: var(--btn-hover-bg);
+      transform: translateY(-0.4rem);
+      box-shadow: 0 0.6rem 1.875rem rgba(0, 0, 0, 0.4);
+    }
+
+    .purchase-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 0.2rem 0.75rem rgba(0, 0, 0, 0.2);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: var(--footer-color);
+      border-radius: 1.5rem;
+      margin-top: 3rem;
+      color: #ccc;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: fadeInUp 2s ease-in-out;
+    }
+
+    .footer a {
+      color: var(--main-color);
+      text-decoration: none;
+      transition: color var(--animation-duration) ease;
+    }
+
+    .footer a:hover {
+      color: #ffffff;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(2rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(2rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDropdown {
+      from { opacity: 0; transform: translateY(-0.75rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInText {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media(max-width: 1440px) {
+      .page-header {
+        padding: 9rem 1.5rem 3rem;
+      }
+    }
+
+    @media(max-width: 1024px) {
+      .page-header {
+        padding: 7rem 1.5rem 3rem;
+      }
+
+      .page-header h1 {
+        font-size: 3.5rem;
+      }
+
+      .product-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+    }
+
+    @media(max-width: 768px) {
+      .nav-bar {
+        padding: 0.5rem 1.5rem;
+        width: 90%;
+      }
+
+      .nav-bar .nav-links {
+        display: none;
+        position: absolute;
+        top: 3rem;
+        right: 1.5rem; 
+        background: var(--navbar-bg);
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.3);
+      }
+
+      .nav-bar .nav-links.active {
+        display: flex;
+      }
+
+      .nav-bar .nav-links a {
+        font-size: 0.8rem;
+      }
+
+      .menu.open div:nth-child(1) {
+        transform: rotate(45deg) translate(0.375rem, 0.375rem);
+      }
+
+      .menu.open div:nth-child(2) {
+        opacity: 0;
+      }
+
+      .menu.open div:nth-child(3) {
+        transform: rotate(-45deg) translate(0.375rem, -0.375rem);
+      }
+
+      .menu.open div {
+        transition: all 0.3s ease;
+      }
+
+      .page-header h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media(max-width: 480px) {
+      .page-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .product-card img {
+        height: 8rem;
+      }
+
+      .purchase-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .product-section {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body class="dark-theme">
+  <div class="main-container">
+    <div class="nav-bar">
+      <div class="logo">
+        <img src="https://th.bing.com/th/id/R.d7d9fb31c03017c75e5bd0e20a07489d?rik=Pflw6RzAtjzR4Q&riu=http%3a%2f%2fclipart-library.com%2fimages%2friLonG4oT.png&ehk=qU5C1lMBxA6eZrDNbr3AsPj%2bW6SKseYygkUAleoZOH4%3d&risl=&pid=ImgRaw&r=0">
+      </div>
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="https://discord.gg/TWnAftpxpg">Discord</a>
+      </div>
+      <div class="menu-container">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="page-header">
+      <h1>Account Alley</h1>
+    </div>
+
+    <div class="content-container">
+      <div class="product-section">
+        <span>Products</span>
+      </div>
+      <div class="product-grid">
+        <div class="product-card" data-price-usd="1.00" data-product="Discord Nitro" data-img="https://th.bing.com/th/id/OIP.UUpTuerg1MRcX2-_kfvWWgHaE8?rs=1&pid=ImgDetMain">
+          <img src="https://th.bing.com/th/id/OIP.ti_w9fIYP4mz6GGThbZVMQHaEK?rs=1&pid=ImgDetMain" alt="Discord Nitro Thumbnail">
+          <div class="product-name">Random Steam Account</div>
+          <div class="product-cost">$2.00</div>
+          <a href="#" class="purchase-btn" id="sellix-btn" data-sellix-product="676e4d892432c">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="20.00" data-product="Gorilla tag method" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/d6233cd9-1150-46f3-c536-744fecff0d00/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/d6233cd9-1150-46f3-c536-744fecff0d00/shopitem" alt="Gorilla tag Thumbnail">
+          <div class="product-name">Gorilla tag method</div>
+          <div class="product-cost">$20.00</div>
+          <a href="#" class="purchase-btn" id="sellix-btn" data-sellix-product="674cfda51beff">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="3.00" data-product="Gorilla Tag" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/d6233cd9-1150-46f3-c536-744fecff0d00/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/d6233cd9-1150-46f3-c536-744fecff0d00/shopitem" alt="Gorilla Tag Thumbnail">
+          <div class="product-name">Gorilla Tag</div>
+          <div class="product-cost">$3.00</div>
+          <a href="#" class="purchase-btn" id="sellix-btn" data-sellix-product="66f8987cd60f4">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="2.00" data-product="NordVPN" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/aa69c43f-eaae-4203-3f2e-e41d530bb800/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/aa69c43f-eaae-4203-3f2e-e41d530bb800/shopitem" alt="NordVPN Thumbnail">
+          <div class="product-name">NordVPN</div>
+          <div class="product-cost">$2.00</div>
+          <a href="#" class="purchase-btn" id="sellix-btn" data-sellix-product="66f8ce8bd91ab">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="1.00" data-product="Crunchyroll Premium" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/2fc46d29-443d-4302-cb2c-32ab3af06700/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/2fc46d29-443d-4302-cb2c-32ab3af06700/shopitem" alt="Crunchyroll Premium Thumbnail">
+          <div class="product-name">Crunchyroll Premium</div>
+          <div class="product-cost">$1.00</div>
+          <a href="#" class="purchase-btn" id="sellix-btn" data-sellix-product="670854e005637">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="2.00" data-product="Restorable gtag account" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/834cf154-c138-49ac-cf2f-67670bac1100/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/834cf154-c138-49ac-cf2f-67670bac1100/shopitem" alt="Restorable gtag account Thumbnail">
+          <div class="product-name">Restorable gtag account</div>
+          <div class="product-cost">$2.00</div>
+          <a href="#" class="purchase-btn" id="sellix-btn" data-sellix-product="67021849eaba3">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="1.00" data-product="Netflix" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/e69f89e7-7a77-4d99-e882-de1f4bd8af00/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/e69f89e7-7a77-4d99-e882-de1f4bd8af00/shopitem" alt="Netflix Thumbnail">
+          <div class="product-name">Netflix account (Unlimited)</div>
+          <div class="product-cost">$1.00</div>
+          <a href="#" class="purchase-btn" id="sellix-btn" data-sellix-product="67195368664f9">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="1.00" data-product="HBO Max" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/4e52f230-d4fd-44f2-4dcc-f46b8289a100/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/4e52f230-d4fd-44f2-4dcc-f46b8289a100/shopitem" alt="HBO Max Thumbnail">
+          <div class="product-name">HBO Max account (Unlimited)</div>
+          <div class="product-cost">$1.00</div>
+          <a href="#" class="purchase-btn" id="sellix-btn" data-sellix-product="671955441f9e7">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="1.00" data-product="Disney+" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/816ebdea-c465-47d7-b589-e0e2af294900/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/816ebdea-c465-47d7-b589-e0e2af294900/shopitem" alt="Disney+ Thumbnail">
+          <div class="product-name">Disney+ account (Unlimited)</div>
+          <div class="product-cost">$1.00</div>
+          <a href="#" class="purchase-btn" id="sellix-btn" data-sellix-product="6719611da9d4d">Buy Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sellix-placeholder">
+    <div id="sellix-buttons-overlay">
+      <style>
+        [data-sellix-product] * {
+          pointer-events: none;
+        }
+        [data-sellix-group] * {
+          pointer-events: none;
+        }
+      </style>
+    </div>
+  </div>
+
+  <script src="https://cdn.sell.app/embed/script.js" type="text/javascript"></script>
+  <script src="https://cdn.sellix.io/static/js/embed.js" type="text/javascript"></script>
+  <script>
+    $(document).ready(function() {
+      const themeOptions = $('.theme-toggle .options div');
+      const body = $('body');
+      const selectedTheme = localStorage.getItem('selectedTheme') || 'dark';
+      body.removeClass('light-theme neon-theme dark-theme').addClass(`${selectedTheme}-theme`);
+      $('.theme-toggle .selected-theme').html($('.theme-toggle .options div[data-theme="' + selectedTheme + '"]').html());
+
+      themeOptions.click(function() {
+        const selected = $(this).data('theme');
+        body.removeClass('light-theme neon-theme dark-theme').addClass(`${selected}-theme`);
+        $('.theme-toggle .selected-theme').html($(this).html());
+        localStorage.setItem('selectedTheme', selected);
+      });
+
+      $('.menu-container').click(function() {
+        $('.nav-links').toggleClass('active');
+        $(this).toggleClass('open');
+      });
+
+      $(document).click(function(event) {
+        if (!$(event.target).closest('.theme-toggle').length) {
+          $('.theme-toggle .options').hide();
+        }
+      });
+
+      function fetchExchangeRates(base = 'USD') {
+        return $.ajax({
+          url: `https://open.er-api.com/v6/latest/${base}`,
+          method: 'GET'
+        });
+      }
+
+      function getUserCurrency() {
+        return $.ajax({
+          url: 'https://ipapi.co/json/',
+          method: 'GET'
+        });
+      }
+
+      let exchangeRates = {};
+      let userCurrency = 'USD';
+
+      $.when(fetchExchangeRates(), getUserCurrency()).done(function(rateData, locationData) {
+        if(rateData[0].result === "success") {
+          exchangeRates = rateData[0].rates;
+        } else {
+          exchangeRates = {};
+        }
+        userCurrency = locationData[0].currency || 'USD';
+        setCurrency(userCurrency);
+      }).fail(function() {
+        setCurrency('USD');
+      });
+
+      function setCurrency(currency) {
+        if (exchangeRates[currency]) {
+          $('.product-card').each(function() {
+            const priceUSD = parseFloat($(this).data('price-usd'));
+            const convertedPrice = (priceUSD * exchangeRates[currency]).toFixed(2);
+            const symbol = getCurrencySymbol(currency);
+            $(this).find('.product-cost').text(`${symbol}${convertedPrice}`);
+          });
+        }
+      }
+
+      function getCurrencySymbol(currency) {
+        const symbols = {
+          USD: '$',
+          EUR: '€',
+          GBP: '£',
+          JPY: '¥',
+          AUD: 'A$',
+          CAD: 'C$',
+          CHF: 'CHF',
+          CNY: '¥',
+          SEK: 'kr',
+          NZD: 'NZ$'
+        };
+        return symbols[currency] || '$';
+      }
+
+      $('.product-card').each(function() {
+        const imgSrc = $(this).data('img');
+        $(this).find('img').attr('src', imgSrc);
+      });
+    });
+  </script>
+</body>
+</html>
