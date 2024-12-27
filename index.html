@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account Alley</title>
+  <link rel="icon" href="https://th.bing.com/th/id/R.d7d9f31c03017c75e5bd0e20a07489d?rik=Pflw6RzAtjzR4Q&riu=http%3a%2f%2fclipart-library.com%2fimages%2friLonG4oT.png&ehk=qU5C1lMBxA6eZrDNbr3AsPj%2bW6SKseYygkUAleoZOH4%3d&risl=&pid=ImgRaw&r=0" type="image/x-icon" />
+  <meta name="description" content="#1 Account & Subscription service.">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --background-color: #0b0b48;
+      --text-color: #eaeaea;
+      --primary-color: #645DD7;
+      --secondary-color: #B983FF;
+      --nav-bg: rgba(255, 255, 255, 0.1);
+      --card-bg: rgba(255, 255, 255, 0.1);
+      --button-bg: linear-gradient(135deg, #645DD7, #B983FF);
+      --button-hover-bg: linear-gradient(135deg, #4a3cb9, #9a69e7);
+      --footer-bg: rgba(255, 255, 255, 0.1);
+      --transition-duration: 0.3s;
+      --border-radius: 12px;
+    }
+    .neon-theme {
+      --background-color: #000000;
+      --text-color: #00ffea;
+      --primary-color: #ff00c8;
+      --secondary-color: #ffea00;
+      --nav-bg: rgba(0, 0, 0, 0.8);
+      --card-bg: rgba(0, 0, 0, 0.7);
+      --button-bg: linear-gradient(135deg, #ff00c8, #ffea00);
+      --button-hover-bg: linear-gradient(135deg, #c70039, #900c3f);
+      --footer-bg: rgba(0, 0, 0, 0.8);
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Unbounded', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      overflow-x: hidden;
+      transition: background-color var(--transition-duration) ease, color var(--transition-duration) ease;
+    }
+
+    .scale-container {
+      transform: scale(0.75);
+      transform-origin: top left;
+      width: 133.33%;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.625rem 1.875rem;
+      background: var(--nav-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 2.5rem;
+      width: 80%;
+      max-width: 1200px;
+      position: fixed;
+      top: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      transition: box-shadow var(--transition-duration) ease, background var(--transition-duration) ease;
+    }
+
+    .navbar:hover {
+      box-shadow: 0 0.375rem 0.625rem rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar .logo img {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      border: 1px solid var(--text-color);
+      transition: border-color var(--transition-duration) ease;
+    }
+
+    .navbar .nav-items {
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    .navbar .nav-items a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.5rem 0.75rem;
+      border-radius: 1.5625rem;
+      transition: color var(--transition-duration) ease, background-color var(--transition-duration) ease;
+    }
+
+    .navbar .nav-items a:hover {
+      color: #9fdfff;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .theme-changer {
+      position: relative;
+      display: inline-block;
+      background-color: var(--nav-bg);
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--border-radius);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      color: var(--text-color);
+      transition: background-color var(--transition-duration) ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-changer:hover {
+      background-color: var(--nav-bg);
+    }
+
+    .theme-changer .dropdown-selected {
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3125rem;
+    }
+
+    .theme-changer .dropdown-options {
+      position: absolute;
+      top: 110%;
+      left: 0;
+      width: 100%;
+      background-color: var(--nav-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.625rem;
+      display: none;
+      z-index: 100;
+      overflow: hidden;
+      animation: fadeInDropdown var(--transition-duration) ease;
+    }
+
+    .theme-changer .dropdown-options div {
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      transition: background-color var(--transition-duration) ease;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-changer .dropdown-options div:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .theme-changer:hover .dropdown-options {
+      display: block;
+    }
+
+    .theme-changer .dropdown-arrow {
+      width: 0.5rem;
+      height: 0.5rem;
+      border: solid var(--text-color);
+      border-width: 0 0.125rem 0.125rem 0;
+      transform: rotate(45deg);
+      transition: transform var(--transition-duration) ease;
+    }
+
+    .theme-changer:hover .dropdown-arrow {
+      transform: rotate(225deg);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 0.3125rem;
+    }
+
+    .hamburger div {
+      width: 1.25rem;
+      height: 0.125rem;
+      background-color: var(--text-color);
+      transition: all var(--transition-duration) ease;
+    }
+
+    .header {
+      text-align: center;
+      padding: 9.375rem 1.25rem 3.125rem;
+      max-width: 62.5rem;
+      margin: auto;
+      animation: fadeIn 1s ease-out forwards;
+    }
+
+    .header h1 {
+      font-size: 3.5rem;
+      color: var(--primary-color);
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      margin-bottom: 1.25rem;
+      animation: fadeInText 2s ease-out;
+    }
+
+    .header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -0.625rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3.75rem;
+      height: 0.1875rem;
+      background-color: var(--primary-color);
+      border-radius: 0.3125rem;
+    }
+
+    .container {
+      max-width: 75rem;
+      margin: 0 auto;
+      padding: 1.25rem 1.25rem 3.75rem 1.25rem;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .shop-header {
+      font-size: 1.75rem;
+      text-align: left;
+      color: var(--text-color);
+      margin-bottom: 1.875rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      flex-wrap: wrap;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+      gap: 1.875rem;
+      animation: fadeInUp 1.5s ease-in-out;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(15px);
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.2);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-card:hover {
+      transform: translateY(-0.625rem);
+      box-shadow: 0 0.9375rem 2.5rem rgba(0, 0, 0, 0.4);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 9.375rem;
+      object-fit: cover;
+      border-radius: 0.9375rem;
+      margin-bottom: 0.9375rem;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .product-title {
+      font-size: 1.375rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      flex-grow: 1;
+    }
+
+    .product-price {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin-bottom: 0.75rem;
+    }
+
+    .buy-btn {
+      display: inline-block;
+      padding: 0.75rem 1.875rem;
+      background: var(--button-bg);
+      border-radius: 1.875rem;
+      text-decoration: none;
+      font-weight: bold;
+      color: #ffffff;
+      transition: background var(--transition-duration) ease, transform var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
+      box-shadow: 0 0.25rem 0.938rem rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .buy-btn:hover {
+      background: var(--button-hover-bg);
+      transform: translateY(-0.3125rem);
+      box-shadow: 0 0.5rem 1.563rem rgba(0, 0, 0, 0.4);
+    }
+
+    .buy-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 0.1875rem 0.625rem rgba(0, 0, 0, 0.2);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 1.875rem;
+      background-color: var(--footer-bg);
+      border-radius: 1.25rem;
+      margin-top: 2.5rem;
+      color: #999;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: fadeInUp 2s ease-in-out;
+    }
+
+    .footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color var(--transition-duration) ease;
+    }
+
+    .footer a:hover {
+      color: #ffffff;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(1.25rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(2.5rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDropdown {
+      from { opacity: 0; transform: translateY(-0.625rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInText {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media(max-width: 1440px) {
+      .header {
+        padding: 10rem 1.25rem 3.125rem;
+      }
+    }
+
+    @media(max-width: 1024px) {
+      .header {
+        padding: 7.5rem 1.25rem 3.125rem;
+      }
+
+      .header h1 {
+        font-size: 3rem;
+      }
+
+      .shop-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.9375rem;
+      }
+    }
+
+    @media(max-width: 768px) {
+      .navbar {
+        padding: 0.5rem 1.25rem;
+        width: 90%;
+      }
+
+      .navbar .nav-items {
+        display: none;
+        position: absolute;
+        top: 3.125rem;
+        right: 1.25rem; 
+        background: var(--nav-bg);
+        flex-direction: column;
+        gap: 0.625rem;
+        padding: 0.625rem;
+        border-radius: 0.625rem;
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.3);
+      }
+
+      .navbar .nav-items.active {
+        display: flex;
+      }
+
+      .navbar .nav-items a {
+        font-size: 0.75rem;
+      }
+
+      .hamburger.open div:nth-child(1) {
+        transform: rotate(45deg) translate(0.3125rem, 0.3125rem);
+      }
+
+      .hamburger.open div:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.open div:nth-child(3) {
+        transform: rotate(-45deg) translate(0.3125rem, -0.3125rem);
+      }
+
+      .hamburger.open div {
+        transition: all 0.3s ease;
+      }
+
+      .header h1 {
+        font-size: 2.25rem;
+      }
+    }
+
+    @media(max-width: 480px) {
+      .header h1 {
+        font-size: 1.75rem;
+      }
+
+      .product-card img {
+        height: 7.5rem;
+      }
+
+      .buy-btn {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.875rem;
+      }
+
+      .shop-header {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="dark-theme">
+  <div class="scale-container">
+    <div class="navbar">
+      <div class="logo">
+        <img src="https://th.bing.com/th/id/R.d7d9fb31c03017c75e5bd0e20a07489d?rik=Pflw6RzAtjzR4Q&riu=http%3a%2f%2fclipart-library.com%2fimages%2friLonG4oT.png&ehk=qU5C1lMBxA6eZrDNbr3AsPj%2bW6SKseYygkUAleoZOH4%3d&risl=&pid=ImgRaw&r=0">
+      </div>
+      <div class="nav-items">
+        <a href="#">Home</a>
+        <a href="https://discord.gg/TWnAftpxpg">Discord</a>
+      </div>
+      <div class="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="header">
+      <h1>Account Alley</h1>
+    </div>
+
+    <div class="container">
+      <div class="shop-header">
+        <span>Products</span>
+      </div>
+      <div class="products">
+        <div class="product-card" data-price-usd="1.00" data-product="Discord Nitro" data-img="https://th.bing.com/th/id/OIP.UUpTuerg1MRcX2-_kfvWWgHaE8?rs=1&pid=ImgDetMain">
+          <img src="https://th.bing.com/th/id/OIP.ti_w9fIYP4mz6GGThbZVMQHaEK?rs=1&pid=ImgDetMain" alt="Discord Nitro Thumbnail">
+          <div class="product-title">Random Steam Account</div>
+          <div class="product-price">$2.00</div>
+          <a href="#" class="buy-btn" id="sellix-btn" data-sellix-product="676e4d892432c">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="20.00" data-product="Gorilla tag method" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/d6233cd9-1150-46f3-c536-744fecff0d00/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/d6233cd9-1150-46f3-c536-744fecff0d00/shopitem" alt="Gorilla tag Thumbnail">
+          <div class="product-title">Gorilla tag method</div>
+          <div class="product-price">$20.00</div>
+          <a href="#" class="buy-btn" id="sellix-btn" data-sellix-product="674cfda51beff">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="3.00" data-product="Gorilla Tag" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/d6233cd9-1150-46f3-c536-744fecff0d00/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/d6233cd9-1150-46f3-c536-744fecff0d00/shopitem" alt="Gorilla Tag Thumbnail">
+          <div class="product-title">Gorilla Tag</div>
+          <div class="product-price">$3.00</div>
+          <a href="#" class="buy-btn" id="sellix-btn" data-sellix-product="66f8987cd60f4">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="2.00" data-product="NordVPN" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/aa69c43f-eaae-4203-3f2e-e41d530bb800/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/aa69c43f-eaae-4203-3f2e-e41d530bb800/shopitem" alt="NordVPN Thumbnail">
+          <div class="product-title">NordVPN</div>
+          <div class="product-price">$2.00</div>
+          <a href="#" class="buy-btn" id="sellix-btn" data-sellix-product="66f8ce8bd91ab">Buy Now</a>
+        </div>
+        <div class="product-card" data-price-usd="1.00" data-product="Crunchyroll Premium" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/2fc46d29-443d-4302-cb2c-32ab3af06700/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/2fc46d29-443d-4302-cb2c-32ab3af06700/shopitem" alt="Crunchyroll Premium Thumbnail">
+          <div class="product-title">Crunchyroll Premium</div>
+          <div class="product-price">$1.00</div>
+          <a href="#" class="buy-btn" id="sellix-btn" data-sellix-product="670854e005637">Buy Now</a>
+       </div>
+        <div class="product-card" data-price-usd="2.00" data-product="Restorable gtag account" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/834cf154-c138-49ac-cf2f-67670bac1100/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/834cf154-c138-49ac-cf2f-67670bac1100/shopitem" alt="Restorable gtag account Thumbnail">
+          <div class="product-title">Restorable gtag account</div>
+          <div class="product-price">$2.00</div>
+          <a href="#" class="buy-btn" id="sellix-btn" data-sellix-product="67021849eaba3">Buy Now</a>
+        </div>
+         <div class="product-card" data-price-usd="1.00" data-product="Netflix" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/e69f89e7-7a77-4d99-e882-de1f4bd8af00/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/e69f89e7-7a77-4d99-e882-de1f4bd8af00/shopitem" alt="Netflix Thumbnail">
+          <div class="product-title">Netflix account (Unlimited)</div>
+          <div class="product-price">$1.00</div>
+          <a href="#" class="buy-btn" id="sellix-btn" data-sellix-product="67195368664f9">Buy Now</a>
+        </div>
+         <div class="product-card" data-price-usd="1.00" data-product="Hbo max" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/4e52f230-d4fd-44f2-4dcc-f46b8289a100/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/4e52f230-d4fd-44f2-4dcc-f46b8289a100/shopitem" alt="Hbo max Thumbnail">
+          <div class="product-title">Hbo max account (Unlimited)</div>
+          <div class="product-price">$1.00</div>
+          <a href="#" class="buy-btn" id="sellix-btn" data-sellix-product="671955441f9e7">Buy Now</a>
+        </div>
+         <div class="product-card" data-price-usd="1.00" data-product="Disney+" data-img="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/816ebdea-c465-47d7-b589-e0e2af294900/shopitem">
+          <img src="https://imagedelivery.net/95QNzrEeP7RU5l5WdbyrKw/816ebdea-c465-47d7-b589-e0e2af294900/shopitem" alt="Disneyplus Thumbnail">
+          <div class="product-title">Disney+ account (Unlimited)</div>
+          <div class="product-price">$1.00</div>
+          <a href="#" class="buy-btn" id="sellix-btn" data-sellix-product="6719611da9d4d">Buy Now</a>
+        </div>
+        </div>
+      </div>
+  </div> 
+
+  <div id="sellix-container">
+    <div id="sellix-buttons-pointers-fix">
+      <style>
+        [data-sellix-product] * {
+          pointer-events: none;
+        }
+        [data-sellix-group] * {
+          pointer-events: none;
+        }
+      </style>
+    </div>
+  </div>
+
+  <script src="https://cdn.sell.app/embed/script.js" type="text/javascript"></script>
+  <script src="https://cdn.sellix.io/static/js/embed.js" type="text/javascript"></script>
+  <script>
+    $(document).ready(function() {
+      const themeOptions = $('.theme-changer .dropdown-options div');
+      const body = $('body');
+      const selectedTheme = localStorage.getItem('selectedTheme') || 'dark';
+      body.removeClass('light-theme neon-theme dark-theme').addClass(`${selectedTheme}-theme`);
+      $('.theme-changer .dropdown-selected').html($('.theme-changer .dropdown-options div[data-theme="' + selectedTheme + '"]').html());
+
+      themeOptions.click(function() {
+        const selected = $(this).data('theme');
+        body.removeClass('light-theme neon-theme dark-theme').addClass(`${selected}-theme`);
+        $('.theme-changer .dropdown-selected').html($(this).html());
+        localStorage.setItem('selectedTheme', selected);
+      });
+
+      $('.hamburger').click(function() {
+        $('.nav-items').toggleClass('active');
+        $(this).toggleClass('open');
+      });
+
+      $(document).click(function(event) {
+        if (!$(event.target).closest('.theme-changer').length) {
+          $('.theme-changer .dropdown-options').hide();
+        }
+      });
+
+      function fetchExchangeRates(base = 'USD') {
+        return $.ajax({
+          url: `https://open.er-api.com/v6/latest/${base}`,
+          method: 'GET'
+        });
+      }
+
+      function getUserCurrency() {
+        return $.ajax({
+          url: 'https://ipapi.co/json/',
+          method: 'GET'
+        });
+      }
+
+      let exchangeRates = {};
+      let userCurrency = 'USD';
+
+      $.when(fetchExchangeRates(), getUserCurrency()).done(function(rateData, locationData) {
+        if(rateData[0].result === "success") {
+          exchangeRates = rateData[0].rates;
+        } else {
+          exchangeRates = {};
+        }
+        userCurrency = locationData[0].currency || 'USD';
+        setCurrency(userCurrency);
+      }).fail(function() {
+        setCurrency('USD');
+      });
+
+      function setCurrency(currency) {
+        if (exchangeRates[currency]) {
+          $('.product-card').each(function() {
+            const priceUSD = parseFloat($(this).data('price-usd'));
+            const convertedPrice = (priceUSD * exchangeRates[currency]).toFixed(2);
+            const symbol = getCurrencySymbol(currency);
+            $(this).find('.product-price').text(`${symbol}${convertedPrice}`);
+          });
+        }
+      }
+
+      function getCurrencySymbol(currency) {
+        const symbols = {
+          USD: '$',
+          EUR: '€',
+          GBP: '£',
+          JPY: '¥',
+          AUD: 'A$',
+          CAD: 'C$',
+          CHF: 'CHF',
+          CNY: '¥',
+          SEK: 'kr',
+          NZD: 'NZ$'
+        };
+        return symbols[currency] || '$';
+      }
+
+      $('.product-card').each(function() {
+        const imgSrc = $(this).data('img');
+        $(this).find('img').attr('src', imgSrc);
+      });
+    });
+  </script>
+</body>
+</html>
